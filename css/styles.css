@@ -1,0 +1,15 @@
+
+body{font-family:Arial, sans-serif;margin:0;background:#f6f2ec;color:#2b2218}
+.site-header{background:#10243a;color:#fff;padding:18px;text-align:center}
+.site-header img{height:64px;vertical-align:middle;margin-right:12px}
+.catalog{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;padding:24px}
+.card{background:#fff;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.card img{width:100%;border-radius:8px}
+.price{font-weight:700;color:#c08a53}
+.actions{display:flex;gap:8px;margin-top:8px}
+.btn{display:inline-block;padding:8px 12px;border-radius:8px;text-decoration:none;background:#c08a53;color:#fff}
+.product-page{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:24px;max-width:1100px;margin:0 auto}
+.gallery img{width:100%;border-radius:10px;margin-bottom:10px}
+.info{background:#fff;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+footer{text-align:center;padding:20px;color:#7a6a56}
+.back{color:#fff;text-decoration:none;display:inline-block;margin-bottom:8px}

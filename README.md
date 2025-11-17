@@ -1,10 +1,19 @@
 
-# aistdrums-shop
+# aistdrums-shop (PWA)
 
-PWA mini-shop for AistDrums. To publish on GitHub Pages:
+Структура готового проекта для GitHub Pages.
 
-1. Push this repository to GitHub (public).
-2. In repository -> Settings -> Pages: Select branch `main`, folder `/ (root)`.
-3. After deploy, site will be available at https://volodik33.github.io/AistDrums/
+Инструкция:
+1. Распакуйте архив и отправьте в публичный репозиторий.
+2. В Settings -> Pages выберите ветку main и папку root.
+3. Если нужно — замените изображения в /images на реальные.
+4. Для уведомлений Telegram замените placeholders в коде (если используете).
 
-Replace YOUR_TELEGRAM_BOT_TOKEN and YOUR_CHAT_ID in `index.html` to enable direct Telegram Bot API notifications.
+Файлы:
+- index.html — главная страница
+- product.html — шаблон товара (использует products.json и js/product.js)
+- products.json — данные товаров
+- js/main.js, js/product.js — логика
+- css/styles.css — стили
+- images/ — изображения (включены те, что были присланы)
+- sw.js, manifest.json — PWA

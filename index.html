@@ -1,160 +1,23 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="manifest.json" />
-  <title>AistDrums — Магазин музыкальных инструментов</title>
-  <style>
-    /* ========== СТИЛИ (Tailwind-like минималистично вручную) ========== */
-    body { margin: 0; font-family: sans-serif; background: #f6f2ec; color: #2b2218; }
-    header { background: #c08a53; padding: 20px; color: white; text-align: center; font-size: 24px; }
-    .catalog { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
-    .card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display:flex; flex-direction:column; }
-    .card img { width: 100%; border-radius: 10px; }
-    .card-title { font-size: 20px; margin-top:10px; }
-    .card-price { font-size: 18px; margin: 8px 0; }
-    button { background: #c08a53; border: none; color: white; padding: 10px; border-radius: 10px; cursor: pointer; }
-    button:hover { background: #a67340; }
-    #cartPanel { position: fixed; top:0; right:0; width: 320px; height:100%; background:white; box-shadow: -2px 0 10px rgba(0,0,0,0.2); padding:20px; display:none; flex-direction:column; }
-    #overlay { position: fixed; inset:0; background:rgba(0,0,0,0.4); display:none; }
-    .cart-item { margin-bottom:10px; border-bottom:1px solid #ddd; padding-bottom:10px; }
-    footer { text-align:center; padding: 20px; color:#7a6a56; }
-  </style>
+  <title>AistDrums — Магазин</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header>
-    Мастерская музыкальных инструментов — AistDrums
+  <header class="site-header">
+    <div class="logo"><img src="images/images.png" alt="AistDrums" /></div>
+    <h1>AistDrums — музыкальная мастерская</h1>
   </header>
 
-  <section style="padding:20px; background:#efe7dd; text-align:center;">
-    <h2 style="font-size:26px; margin-bottom:10px;">О мастерской AistDrums</h2>
-    <p style="max-width:800px; margin:0 auto; font-size:18px; line-height:1.5;">
-      Мастерская AistDrums создаёт музыкальные инструменты вручную: глюкофоны, бубны и уникальные металлические арфы.
-      Каждый инструмент создаётся с вниманием к резонансу, чистоте звука и эстетике.
-    </p>
-  </section>
+  <main>
+    <section class="catalog" id="catalog"></section>
+  </main>
 
-  <button onclick="openCart()" style="position:fixed; top:20px; right:20px; z-index:20;">Корзина (<span id="cartCount">0</span>)</button>
-
-  <div style="text-align:center; padding:20px;">
-    <img src="images/icons/icon-192.png" alt="AistDrums Logo" style="width:120px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1);"/>
-  </div>
-
-  <div class="catalog" id="catalog"></div>
-
-  <div id="overlay" onclick="closeCart()"></div>
-  <div id="cartPanel">
-    <h2>Корзина</h2>
-    <div id="cartItems"></div>
-
-    <h3>Оформление заказа</h3>
-    <input id="orderName" placeholder="Ваше имя" style="width:100%; padding:8px; margin-bottom:10px;"/>
-    <input id="orderPhone" placeholder="Телефон" style="width:100%; padding:8px; margin-bottom:10px;"/>
-    <textarea id="orderComment" placeholder="Комментарий" style="width:100%; padding:8px; height:70px;"></textarea>
-
-    <button onclick="submitOrder()" style="margin-top:10px;">Отправить заказ</button>
-    <button onclick="closeCart()" style="margin-top:10px; background:#999;">Закрыть</button>
-  </div>
-
-  <footer>
-    © 2025 AistDrums — производство глюкофонов, бубнов и чакрофонов
-  </footer>
-
-  <script>
-    /* ========== SCRIPT: каталог, корзина, форма заказа ========== */
-
-    const products = [
-      { id:1, title:"Глюкофон Луна и Солнце", price:30000, img:"images/1.png", info:"Мягкое медитативное звучание, тонкая настройка." },
-      { id:2, title:"Глюкофон Лотосный Ом", price:30000, img:"images/5.png", info:"Объёмный звук, глубокий бас, подходит для перформансов." },
-      { id:3, title:"Глюкофон Мандала Мира ", price:35000, img:"images/9.png", info:"Мощная вибрация, духовные практики и шаманские ритуалы." },
-      { id:4, title:"Глюкофон Мистик", price:35000, img:"images/11.png", info:"Компактный, яркое звучание, лёгкий в игре." },
-      { id:5, title:"Чакрофон (арфа из трубок)", price:16000, img:"images/chakrofon.jpg", info:"Уникальный инструмент из металлических трубок, чистые гармоники." }
-    ];
-
-    const catalog = document.getElementById('catalog');
-    products.forEach(p => {
-      catalog.innerHTML += `
-        <div class='card'>
-          <img src='${p.img}' alt='${p.title}' />
-          <div class='card-title'>${p.title}</div>
-          <div class='card-price'>${p.price} ₽</div>
-          <div class='card-info' style="font-size:14px; color:#6a5a45; margin:8px 0;">${p.info}</div>
-          <button onclick='addToCart(${p.id})'>Добавить в корзину</button>
-        </div>
-      `;
-    });
-
-    let cart = [];
-
-    function addToCart(id) {
-      const item = products.find(p => p.id === id);
-      cart.push(item);
-      updateCart();
-    }
-
-    function updateCart() {
-      document.getElementById('cartCount').textContent = cart.length;
-      const list = document.getElementById('cartItems');
-
-      list.innerHTML = cart.map(i => `
-        <div class='cart-item'>${i.title} — ${i.price} ₽</div>
-      `).join('');
-    }
-
-    function openCart() {
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById('cartPanel').style.display = 'flex';
-    }
-
-    function closeCart() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('cartPanel').style.display = 'none';
-    }
-
-    // ===== Telegram WebApp API init =====
-    const tg = window.Telegram?.WebApp;
-    if (tg) tg.expand();
-
-    function submitOrder() {
-      const name = document.getElementById('orderName').value;
-      const phone = document.getElementById('orderPhone').value;
-      const comment = document.getElementById('orderComment').value;
-
-      if (!name || !phone) {
-        alert('Заполните имя и телефон');
-        return;
-      }
-
-      const orderData = {
-        name, phone, comment,
-        items: cart
-      };
-
-      // --- Отправка заказа в Telegram ---
-      if (tg) {
-        tg.sendData(JSON.stringify(orderData));
-      }
-
-      // Запрос напрямую в Telegram Bot API (замени TOKEN и CHAT_ID)
-      fetch(`https://api.telegram.org/botYOUR_TELEGRAM_BOT_TOKEN/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: "YOUR_CHAT_ID",
-          text: `Новый заказ AistDrums:%0AИмя: ${name}%0AТелефон: ${phone}%0AКомментарий: ${comment}%0AТовары: ${cart.map(c=>c.title).join(', ')}`
-        })
-      });
-      alert("Заказ отправлен! Мы свяжемся с вами.");
-
-      cart = [];
-      updateCart();
-    }
-
-    /* ========== PWA Service Worker Registration ========== */
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-    }
-  </script>
+  <footer>© 2025 AistDrums — ручная работа</footer>
+  <script src="js/main.js"></script>
 </body>
 </html>
